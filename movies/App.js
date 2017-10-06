@@ -6,15 +6,13 @@
 
 import React, {Component} from 'react';
 import {
-    Platform,
     StyleSheet,
-    Text,
-    View,
     TextInput,
     ListView,
-    Image
+    View
 } from 'react-native';
 import {debounce} from 'lodash'
+import ListItem from "./ListItem";
 
 export default class App extends Component<{}> {
 
@@ -28,18 +26,6 @@ export default class App extends Component<{}> {
         };
     }
 
-    renderRow(row) {
-        return (
-            <View style={styles.listItem}>
-                <Image source={{uri: row.images.small}} style={styles.poster}/>
-                <View style={{flex: 1}}>
-                    <Text style={styles.title}>{row.title}</Text>
-                    <Text style={styles.subHeading}>{row.genres[0]} - {row.year}</Text>
-                </View>
-            </View>
-        )
-    }
-
     render() {
         return (
             <View style={styles.container}>
@@ -49,7 +35,7 @@ export default class App extends Component<{}> {
                     onChangeText={this.searchMovies}/>
                 <ListView
                     dataSource={this.state.dataSource}
-                    renderRow={this.renderRow}
+                    renderRow={(row, sectionId, rowId) => <ListItem row={row} delay={rowId * 50}/>}
                     enableEmptySections
                 />
             </View>
@@ -81,22 +67,5 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         backgroundColor: '#F5FCFF',
         marginTop: 25,
-    },
-    listItem: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        margin: 8,
-    },
-    poster: {
-        width: 94,
-        height: 70
-    },
-    title: {
-        margin: 5,
-        fontSize: 15,
-    },
-    subHeading: {
-        margin: 5,
-        fontSize: 12,
     }
 });
